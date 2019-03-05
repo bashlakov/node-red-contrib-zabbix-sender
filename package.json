@@ -1,0 +1,32 @@
+{
+  "name": "node-red-contrib-zabbix-sender",
+  "version": "0.1.0",
+  "description": "Node-RED node to send data to Zabbix server",
+  "main": "zabbix-sender.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified yet!\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bashlakov/node-red-contrib-zabbix-sender.git"
+  },
+  "author": "Andrey Bashlakov (https://github.com/bashlakov)",
+  "license": "MIT",
+  "keywords": [
+    "node-red",
+    "zabbix"
+  ],
+  "node-red": {
+    "nodes": {
+      "zabbix-sender": "zabbix-sender.js"
+    }
+  },
+  "dependencies": {
+    "node-zabbix-sender": "1.1.0"
+  },
+  "bugs": {
+    "url": "https://github.com/bashlakov/node-red-contrib-zabbix-sender/issues"
+  },
+  "homepage": "https://github.com/bashlakov/node-red-contrib-zabbix-sender#readme",
+  "devDependencies": {}
+}

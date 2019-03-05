@@ -1,0 +1,100 @@
+<script type="text/x-red" data-template-name="zabbix-sender">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i>Node name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-zabbixServer">Zabbix server</label>
+        <input type="text" id="node-input-zabbixServer" placeholder="Zabbix server address">
+    </div>
+    <div class="form-row">
+        <label for="node-input-zabbixPort">Zabbix port</label>
+        <input type="text" id="node-input-zabbixPort" placeholder="Default to 10051">
+    </div>
+    <div class="form-row">
+        <input type="checkbox" id="node-input-sendTimestamps" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-sendTimestamps" style="width: 70%;">Send timestamps</label>
+        <div style="margin-left: 20px" class="node-input-sendTimestamps-row hide">
+            <div class="form-row">
+                <input type="checkbox" id="node-input-withNs" style="display: inline-block; width: auto; vertical-align: top;">
+                <label for="node-input-withNs" style="width: 70%;">With ns precision</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-timeout">Timeout</label>
+        <input type="text" id="node-input-timeout" placeholder="Default to 5000">
+    </div>
+    <div class="form-row">
+        <label for="node-input-defaultHostname">Default hostname</label>
+        <input type="text" id="node-input-defaultHostname" placeholder="Can be overrided in msg, default to os.hostname">
+    </div>
+</script>
+
+
+<script type="text/x-red" data-help-name="zabbix-sender">
+    <p>Sends items data to Zabbix using the zabbix trapper protocol.</p>
+    <h3>Details</h3>
+    <p>This node is the wrapper around <a href=https://www.npmjs.com/package/node-zabbix-sender>node-zabbix-sender</a> library.</p>
+    <p>To send simple item data, send message with following payload:</p>
+    <pre>
+msg.payload = [
+    "webserver",
+    "httpd.running",
+    0
+]</pre>
+    <p>You can set default hostname in node settings, then you can send just item name and value:</p>
+    <pre>
+msg.payload = [
+    "httpd.running",
+    0
+]</pre>
+    <p>You can also send multiple items at once, just construct payload as array of arrays:</p>
+    <pre>
+msg.payload = [
+    [
+        "dbserver",
+        "mysql.ping",
+        1
+    ],
+    [
+        "webserver",
+        "httpd.running",
+        0
+    ]
+]</pre>
+</script>
+
+
+<script type="text/javascript">
+    RED.nodes.registerType("zabbix-sender", {
+        category: "output",
+        color: "#e00000",
+        defaults: {
+            zabbixServer: { value: "127.0.0.1", required: true },
+            zabbixPort: { value: 10051},
+            sendTimestamps: { value: false},
+            withNs: { value: false},
+            timeout: { value: 5000},
+            defaultHostname: { value: ""}
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: "zabbix.png",
+		align: "right",
+        label: function () {
+            return this.name || "zabbix-sender"
+        },
+        oneditprepare: function() {
+            $("#node-input-sendTimestamps").change(function() {
+                if ($(this).is(":checked")) {
+                    $(".node-input-sendTimestamps-row").show();
+                } else {
+                    $(".node-input-sendTimestamps-row").hide();
+                }
+            });
+            $("#node-input-useAuth").change();
+        }
+    })
+</script>
