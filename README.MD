@@ -1,7 +1,7 @@
 # node-red-contrib-zabbix-sender
 ## About
 Send your data to Zabbix using the Zabbix trapper protocol.
-This node is the wrapper around [node-zabbix-sender](https://www.npmjs.com/package/node-zabbix-sender>node-zabbix-sender) library.
+This node is the wrapper around [node-zabbix-sender](https://www.npmjs.com/package/node-zabbix-sender) library.
 ## Usage
 To send simple item data, send message with following payload:
 ```
