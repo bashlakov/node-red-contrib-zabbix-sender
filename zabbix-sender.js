@@ -7,50 +7,49 @@ module.exports = function (RED) {
 		RED.nodes.createNode(this, config)
 		var node = this
 		node.config = config
-		node.sender = new ZabbixSender({
-			host: node.config.zabbixServer,
-			port: node.config.zabbixPort,
-			timeout: node.config.timeout,
-			with_ns: node.config.withNs,
-			with_timestamps: node.config.sendTimestamps,
-			items_host: node.config.defaultHostname
-		});
 
 		this.on('input', function (msg) {
 			var data = msg.payload
+			var sender = new ZabbixSender({
+				host: node.config.zabbixServer,
+				port: node.config.zabbixPort,
+				timeout: node.config.timeout,
+				with_ns: node.config.withNs,
+				with_timestamps: node.config.sendTimestamps,
+				items_host: node.config.defaultHostname
+			});
 
 			if (!Array.isArray(data)){
-				this.error("Incorrect payload, must be an array", msg);
+				this.error("Incorrect payload, must be an array", {originalMessage: msg});
 				return;
 			} else if (data.length == 0){
-				this.error("Payload is empty", msg);
+				this.error("Payload is empty", {originalMessage: msg});
 				return;
 			} else {
 				if (Array.isArray(data[0])){
 					for (var i in data){
 						try {
-							node.sender.addItem(...data[i]);
+							sender.addItem(...data[i])
 						}catch(err) {
-                    		this.error(err, msg);
+							this.error(err, {originalMessage: msg});
 							return;
-                		}
+						}
 					}
 				} else {
 					try {
-						node.sender.addItem(...data)
+						sender.addItem(...data)
 					}catch(err) {
-                		this.error(err, msg);
+						this.error(err, {originalMessage: msg});
 						return;
-            		}
+					}
 				}
-				
+
 				var that = this;
-				node.sender.send(function(err, res) {
-			    			if (err) {
-			        			that.error(err, msg);
+				sender.send(function(err, res) {
+							if (err) {
+								that.error(err, {originalMessage: msg});
 								return;
-			    			}
-			    			that.log(res, msg);
+							}
 				});
 			}
 		})
