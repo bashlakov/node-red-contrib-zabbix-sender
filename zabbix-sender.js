@@ -16,6 +16,7 @@ module.exports = function (RED) {
 				timeout: node.config.timeout,
 				with_ns: node.config.withNs,
 				with_timestamps: node.config.sendTimestamps,
+				with_custom_timestamps: node.config.customTimestamps,
 				items_host: node.config.defaultHostname
 			});
 
