@@ -12,13 +12,17 @@
         <input type="text" id="node-input-zabbixPort" placeholder="Default to 10051">
     </div>
     <div class="form-row">
-        <input type="checkbox" id="node-input-sendTimestamps" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-input-sendTimestamps" style="width: 70%;">Send timestamps</label>
-        <div style="margin-left: 20px" class="node-input-sendTimestamps-row hide">
-            <div class="form-row">
-                <input type="checkbox" id="node-input-withNs" style="display: inline-block; width: auto; vertical-align: top;">
-                <label for="node-input-withNs" style="width: 70%;">With ns precision</label>
-            </div>
+        <input type="checkbox" id="node-input-customTimestamps" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-customTimestamps" style="width: 70%;">Send custom timestamps</label>
+    </div>
+    <div class="form-row">
+        <input class="node-input-sendTimestamps" type="checkbox" id="node-input-sendTimestamps" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-sendTimestamps" style="width: 70%;">Send current timestamps</label>
+    </div>
+    <div class="node-input-sendTimestamps-row hide">
+        <div class="form-row">
+            <input type="checkbox" id="node-input-withNs" style="display: inline-block; width: auto; vertical-align: top;">
+            <label for="node-input-withNs" style="width: 70%;">With ns precision</label>
         </div>
     </div>
 
@@ -76,6 +80,7 @@ msg.payload = [
             zabbixPort: { value: 10051},
             sendTimestamps: { value: false},
             withNs: { value: false},
+            customTimestamps: { value: false}, 
             timeout: { value: 5000},
             defaultHostname: { value: ""}
         },
@@ -92,6 +97,17 @@ msg.payload = [
                     $(".node-input-sendTimestamps-row").show();
                 } else {
                     $(".node-input-sendTimestamps-row").hide();
+                }
+            });
+            $("#node-input-customTimestamps").change(function() {
+                if ($(this).is(":checked")) {
+                    $(".node-input-sendTimestamps-row").show();
+                    $(".node-input-sendTimestamps").prop('disabled', true);
+                } else {
+                    if (!$("#node-input-sendTimestamps").is(":checked")){
+                        $(".node-input-sendTimestamps-row").hide();
+                    }
+                    $(".node-input-sendTimestamps").prop('disabled', false);
                 }
             });
             $("#node-input-useAuth").change();
