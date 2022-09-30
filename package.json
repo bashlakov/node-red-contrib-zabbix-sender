@@ -21,6 +21,9 @@
       "zabbix-sender": "zabbix-sender.js"
     }
   },
+  "dependencies": {
+    "node-zabbix-sender": "git+ssh://git@github.com/muutech/node-zabbix-sender.git#731e64a5e403a9d0c57f11e365807166832a974c"
+  },
   "bugs": {
     "url": "https://github.com/bashlakov/node-red-contrib-zabbix-sender/issues"
   },
